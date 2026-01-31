@@ -15,8 +15,39 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include,re_path
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="My API",
+        default_version='v1',
+        description="API documentation",
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("api/users/", include("users.urls")),
+    path("api/profiles/", include("profiles.urls")),
+    path("api/posts/", include("posts.urls")),
+    path("api/stories/", include("story.urls")),
+    path("api/chats/", include("chats.urls")),
+    path("api/notifications/", include("notification.urls")),
+    path("api/social/", include("social.urls")),    
+    re_path(
+        r'^swagger/$',
+        schema_view.with_ui('swagger', cache_timeout=0),
+        name='schema-swagger-ui'
+    ),
+    # ReDoc
+    re_path(
+        r'^redoc/$',
+        schema_view.with_ui('redoc', cache_timeout=0),
+        name='schema-redoc'
+    ),
 ]

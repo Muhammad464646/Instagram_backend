@@ -4,9 +4,8 @@ class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
     caption = models.TextField(blank=True)
     media_url = models.URLField()
-    media_type = models.CharField(max_length=20)  # image / video
+    media_type = models.CharField(max_length=20) 
     created_at = models.DateTimeField(auto_now_add=True)
-
 
 
 class Like(models.Model):

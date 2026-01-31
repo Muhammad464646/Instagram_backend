@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+AUTH_USER_MODEL = "users.User"
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,14 +39,35 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'users.apps.UserConfig'
-    "apps.profiles",
-    "apps.posts",
-    "apps.stories",
-    "apps.chats",
-    "apps.notifications",
-    "apps.social",
+    'users.apps.UserConfig',
+    "profiles.apps.ProfilesConfig",
+    "posts.apps.PostsConfig",
+    "story.apps.StoryConfig",
+    "chats.apps.ChatsConfig",
+    "notification.apps.NotificationConfig",
+    "social.apps.SocialConfig",
+    'drf_yasg',
 ]
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'TokenAuth': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization'
+        }
+    }
+}
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=58),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
