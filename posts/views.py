@@ -18,33 +18,22 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
     @action(detail=True, methods=["POST"])
-    def like(self, request, pk=None):
+    def toggle_like(self, request, pk=None):
         post = self.get_object()
         like, created = Like.objects.get_or_create(user=request.user, post=post)
         if not created:
-            return Response({"detail": "Already liked"}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({"detail": "Liked"}, status=status.HTTP_201_CREATED)
-
-    @action(detail=True, methods=["POST"])
-    def unlike(self, request, pk=None):
-        post = self.get_object()
-        try:
-            like = Like.objects.get(user=request.user, post=post)
             like.delete()
             return Response({"detail": "Unliked"}, status=status.HTTP_200_OK)
-        except Like.DoesNotExist:
-            return Response({"detail": "Not liked yet"}, status=status.HTTP_400_BAD_REQUEST)
-
+        return Response({"detail": "Liked"}, status=status.HTTP_201_CREATED)
 
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     permission_classes = [permissions.IsAuthenticated]
-
     def get_queryset(self):
-        post_id = self.request.query_params.get("post")
+        post_id = self.request.query_params.get("post_id")
         if post_id:
             return Comment.objects.filter(post_id=post_id).order_by("created_at")
-        return Comment.objects.none()
+        return Comment.objects.all()
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

@@ -10,11 +10,10 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ["id", "username"]
 
 class CommentSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
 
     class Meta:
         model = Comment
-        fields = ["id", "user", "text", "created_at"]
+        fields = ["id", "text",'post',"created_at"]
 
 class PostSerializer(serializers.ModelSerializer):
     likes_count = serializers.IntegerField(source="likes.count", read_only=True)
