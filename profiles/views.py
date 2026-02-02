@@ -29,6 +29,7 @@ def ProfileDetailView(request,pk):
         return Response(status=status.HTTP_400_BAD_REQUEST)
     
     if request.method=="GET":
+        profile=Profile.objects.get(pk=pk)
         serializer=ProfileSerializers(profile)
         return Response(serializer.data)
     

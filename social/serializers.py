@@ -17,7 +17,6 @@ class FollowSerializer(serializers.ModelSerializer):
         request = self.context["request"]
         follower = request.user
         following = attrs.get("following")
-        print('aasasdasd',attrs)
 
         if self.context['request'].user == attrs.get('following'):
             raise serializers.ValidationError(["You cannot follow yourself."])
