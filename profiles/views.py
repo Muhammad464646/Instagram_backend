@@ -6,9 +6,11 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 
 class ProfileViewSet(APIView):
+    permission_classes=[IsAuthenticated]
     def get(self,request):
         profile=Profile.objects.filter(user=request.user)
         serializer=ProfileSerializers(profile,many=True)
@@ -23,6 +25,7 @@ class ProfileViewSet(APIView):
           400: "Validation error"  })
 @api_view(["GET","PUT","DELETE"])
 def ProfileDetailView(request,pk):
+    permission_classes=[IsAuthenticated]
     try:
         profile=Profile.objects.get(user=request.user)
     except Profile.DoesNotExist:

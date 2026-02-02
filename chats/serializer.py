@@ -5,7 +5,7 @@ from django.db.models import Q
 class ChatsSerializer(serializers.ModelSerializer):
     class Meta:
         model=Chat
-        fields=['id','user_2']
+        fields=['id','user_2','user_1']
         read_only_fields=['user_1']
 
     

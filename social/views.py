@@ -10,6 +10,7 @@ from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
 
 class FollowViewSet(APIView):
+    permission_classes=[IsAuthenticated]
     def get(self,request):
         follow=Follow.objects.filter(follower=request.user)
         serializer=FollowSerializer(follow,many=True)
@@ -27,6 +28,7 @@ class FollowViewSet(APIView):
 
 
 class FollowersViewSet(APIView):
+    permission_classes=[IsAuthenticated]
     def get(self,request):
         follow=Follow.objects.filter(following=request.user)
         serializer=FollowingSerializer(follow,many=True)
